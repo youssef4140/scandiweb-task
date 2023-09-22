@@ -52,15 +52,15 @@ use PDOException;
                 case "add":
                     $product['product_id']=$this->id;
                     $this->product = $productTypeClass::add($product);
-                    return $this;
-                    break;
+                    return $this->product;
                 case "find":
                     $this->product = $productTypeClass::find($this->id,'product_id');
-                    return $this;
+                    return $this->product;
+                case "update":
+                    $this->product = $productTypeClass::find($this->id,'product_id');
+                    $this->product->update($product,$this->id,'product_id');
+                    return $this->product;
                     break;
-                // case "update":
-                //     $this->product = $productTypeClass::find($this->id,'product_id');
-                //     break;
                 default:
                     echo "Your favorite color is neither red, blue, nor green!";
                 }

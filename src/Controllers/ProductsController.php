@@ -18,7 +18,7 @@ class ProductsController extends Controller
     $request = $this->requestBody();
     $product = Products::add($request);
     $productType = $product->product_type;
-    $productWithType = $product->$productType('add',$request);
+    $product->$productType('add',$request);
     return $product;
    }
 
@@ -26,22 +26,32 @@ class ProductsController extends Controller
    {
     $id = $_GET['id'];
     $product = Products::find($id);
-    $productType = $product->product_type;
-    $productWithType = $product->$productType('find');
-    return $productWithType;
+    // $productType = $product->product_type;
+    // $product->$productType('find');
+    return $product;
    }
    
-   public function getAllProducts()
+   public function getAll()
    {
     $res = [];
     $products = Products::all();
     foreach($products as $product){
         $productType = $product['product_type'];
         $productInstance = Products::instance($product);
-        $productWithType = $productInstance->$productType('find');
-        $res[]= $productWithType;
+        $productInstance->$productType('find');
+        $res[]= $productInstance;
     }
     return $res;
+   }
+
+   public function update()
+   {
+    $request = $this->requestBody();
+    $id = $_GET['id'];
+    $product = Products::find($id);
+    $productType = $product->product_type;
+    $product->$productType('update',$request);
+    return $product;
    }
 
    public function delete()

@@ -18,6 +18,7 @@ class Database
     public function __construct()
     {
         $this->host = $_ENV['HOST'];
+        // $this->host = null;
         $this->user = $_ENV['USER'];
         $this->password = $_ENV['PASSWORD'];
         $this->dbname = $_ENV['DB_NAME'];
@@ -25,10 +26,13 @@ class Database
         $options = [
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+  
         ];
 
         try {
             $this->pdo = new PDO($dsn, $this->user, $this->password, $options);
+            
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
         }

@@ -34,7 +34,8 @@ class Router
             $method = $callback[1];
             if(!method_exists($className,$method)) echo "Method doesn't exist";
             $classInstance = new $className();
-            echo json_encode($classInstance->$method());
+            $response = $classInstance->$method();
+            if(!($response === null)) echo json_encode($response);
             self::$matched = true;
          }
 

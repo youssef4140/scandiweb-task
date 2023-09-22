@@ -25,11 +25,14 @@ use App\Core\Router;
 
 Router::http('post','/api',['ProductsController','add']);
 
-Router::http('get','/api/products',['ProductsController','getAllProducts']);
+Router::http('get','/api/products',['ProductsController','getAll']);
 
 Router::http('get','/api/product',['ProductsController','get']);
 
 Router::http('delete','/api/product',['ProductsController','delete']);
+
+Router::http('patch','/api/product',['ProductsController','update']);
+
 
 
 

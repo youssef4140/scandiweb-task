@@ -2,69 +2,107 @@
 
 namespace App\Models;
 
-use App\Helpers\MySqlHelper;
-
 use App\Core\Model;
 
-use App\Core\Database;
+/**
+ * Products class for managing various product types.
+ */
+class Products extends Model
+{
+    /**
+     * @var int The ID of the product.
+     */
+    public $id;
 
-use PDOException;
+    /**
+     * @var string 
+     */
+    public $sku;
 
-// use App\Models\Discs;
+    /**
+     * @var string 
+     */
+    public $name;
 
-// use App\Models\Books;
+    /**
+     * @var float 
+     */
+    public $price;
 
-// use App\Models\Furniture;
+    /**
+     * @var int
+     */
+    public $product_type;
 
-
-    class Products extends Model
+    /**
+     * Handle specific product type operations.
+     *
+     * @param string $method The operation method ("add", "find", "update").
+     * @param mixed  $product The product data for the operation.
+     * @return mixed The result of the operation.
+     * @throws \Exception If an error occurs during the operation.
+     */
+    public function discs($method, $product = null)
     {
-        public $id;
-        public $sku;
-        public $name;
-        public $price;
-        public $product_type;
+        return $this->type($method, $product);
+    }
 
+    /**
+     * Handle specific product type operations.
+     *
+     * @param string $method The operation method ("add", "find", "update").
+     * @param mixed  $product The product data for the operation.
+     * @return mixed The result of the operation.
+     * @throws \Exception If an error occurs during the operation.
+     */
+    public function books($method, $product = null)
+    {
+        return $this->type($method, $product);
+    }
 
-        public function discs($method,$product = null)
-        {
-            return $this->type($method,$product);
-        }
-     
-        public function books($method,$product)
-        {
-            return $this->type($method,$product);
+    /**
+     * Handle specific product type operations.
+     *
+     * @param string $method The operation method ("add", "find", "update").
+     * @param mixed  $product The product data for the operation.
+     * @return mixed The result of the operation.
+     * @throws \Exception If an error occurs during the operation.
+     */
+    public function furniture($method, $product = null)
+    {
+        return $this->type($method, $product);
+    }
 
-        }
-
-        public function furniture($method,$product)
-        {
-            return $this->type($method,$product);
-
-        }
-
-
-  
-        private function type($method,$product = null)
-        {
-            $productTypeClass = 'App\\Models\\'.ucfirst($this->product_type);
+    /**
+     * Perform product type-specific operations.
+     *
+     * @param string $method The operation method ("add", "find", "update").
+     * @param mixed  $product The product data for the operation.
+     * @return mixed The result of the operation.
+     * @throws \Exception If an error occurs during the operation.
+     */
+    private function type($method, $product = null)
+    {
+        $productTypeClass = 'App\\Models\\' . ucfirst($this->product_type);
+        try {
             switch ($method) {
                 case "add":
-                    $product['product_id']=$this->id;
+                    $product['product_id'] = $this->id;
                     $this->product = $productTypeClass::add($product);
                     return $this->product;
                 case "find":
-                    $this->product = $productTypeClass::find($this->id,'product_id');
+                    $this->product = $productTypeClass::find($this->id, 'product_id');
                     return $this->product;
                 case "update":
-                    $this->product = $productTypeClass::find($this->id,'product_id');
-                    $this->product->update($product,$this->id,'product_id');
+                    $this->product = $productTypeClass::find($this->id, 'product_id');
+                    $this->product->update($product, 'product_id');
                     return $this->product;
                     break;
                 default:
-                    echo "Your favorite color is neither red, blue, nor green!";
-                }
+                    throw new \Exception("First parameter must be add,find or update");
+            }
+        } catch (\Exception $e) {
+            throw $e;
         }
-
     }
-
+}

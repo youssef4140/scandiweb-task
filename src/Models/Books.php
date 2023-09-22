@@ -1,15 +1,20 @@
 <?php
 
-    namespace App\Models;
+namespace App\Models;
 
 use App\Core\Model;
 
 
-    class Books extends Model
-    {
+class Books extends Model
+{
 
-        public $weight;
-        public $product_id;
+    /**
+     * @var int
+     */
+    public $product_id;
 
-
-    }
+    /**
+     * @var float 
+     */
+    public $weight;
+}

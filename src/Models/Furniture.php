@@ -1,15 +1,28 @@
 <?php
 
-    namespace App\Models;
-    
+namespace App\Models;
+
 use App\Core\Model;
 
+class Furniture extends Model
+{
+    /**
+     * @var int 
+     */
+    public $product_id;
 
-    class Furniture extends Model 
-    {
-        public $product_id;
-        public $dimension_l;
-        public $dimension_h;
-        public $dimension_w;
-            
-    }
+    /**
+     * @var float 
+     */
+    public $dimension_l;
+
+    /**
+     * @var float 
+     */
+    public $dimension_h;
+
+    /**
+     * @var float 
+     */
+    public $dimension_w;
+}

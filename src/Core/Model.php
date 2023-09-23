@@ -210,13 +210,16 @@ class Model
             $table = strtolower(self::name());
             $product = self::filter($product);
             $placeHolder = $this->updatePlaceHolders($product, $identifier);
-            if(!$placeHolder) return;
+            if(!$placeHolder) return null;
             $sql = 'UPDATE ' . $table . ' SET ' . $placeHolder . ' WHERE ' . $identifier . ' = :' . $identifier;
             $stmt = $db->pdo->prepare($sql);
             $success = $stmt->execute($product);
-            // if ($success) {
-            //     return self::find($product['id'],$identifier);
-            // }
+            if ($success) {
+                $updatedRecord = self::find($product[$identifier],$identifier);
+                foreach ($updatedRecord as $propertyName => $propertyValue) {
+                    $this->$propertyName = $propertyValue;
+                }
+            }
         } catch (PDOException $e) {
             throw $e;
         }

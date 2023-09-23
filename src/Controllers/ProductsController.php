@@ -88,10 +88,16 @@ class ProductsController extends Controller
             $request = $this->requestBody();
             $id = $_GET['id'];
             $product = Products::find($id);
+            // if($product->product_type !== $request['product_type']){
+            //     throw new Exception(json_encode([false,'product_type cannot be changed'],0));
+            // }
             $productType = $product->product_type;
             unset($request['product_type']);
             $product->update($request);
             $product->$productType('update', $request);
+
+            // $product = Products::find($id);
+            // $product->$productType('find');
             return $product;
         } catch (Exception $e) {
             throw $e;

@@ -2,7 +2,6 @@
 
 namespace App\Core;
 
-header('Content-Type: application/json; charset=utf-8');
 /**
  * Router class for handling HTTP route matching and callbacks.
  */
@@ -14,7 +13,21 @@ class Router
      * @var bool
      */
     private static $matched = false;
+    /**
+     * specify the allowed origin and methods and responds to CORS Preflight
+     */
+    public static function headers()
+    {
+        header("Access-Control-Allow-Origin:" . $_ENV['ACCESS']);
+        header("Access-Control-Allow-Methods: *");
+        header("Access-Control-Allow-Credentials: true");
+        header("Access-Control-Allow-Headers:Options, origin, Content-Type, Authorization, accept, X-Requested-With");
 
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            header("HTTP/1.1 200 OK");
+            exit();
+        }
+    }
     /**
      * Matches an HTTP route based on the request method and URI and calls the callback.
      *
@@ -24,6 +37,8 @@ class Router
      */
     public static function http($httpMethod, $httpUri, $callback)
     {
+        header('Content-Type: application/json; charset=utf-8');
+
         try {
             // Get the request URI
             $requestUri = $_SERVER['REQUEST_URI'];
@@ -36,28 +51,30 @@ class Router
             ) {
                 // Check if the class exists
                 $className = 'App\\Controllers\\' . $callback[0];
-                if (!class_exists($className)){
+                if (!class_exists($className)) {
                     die(json_encode("Class doesn't exist"));
                 }
 
                 // Check if the method exists
                 $method = $callback[1];
-                if (!method_exists($className, $method)){
+                if (!method_exists($className, $method)) {
                     die(json_encode("Method doesn't exist"));
                 }
-                
+
                 // Instantiate the class and call the method
                 $classInstance = new $className();
                 $response = $classInstance->$method();
                 if (!($response === null))
                     echo json_encode($response);
                 self::$matched = true;
-                die();
+                exit();
             }
         } catch (\Exception $e) {
+            http_response_code(400);
             die(
                 json_encode(
                     [
+                        false,
                         "Code" => $e->getCode(),
                         "Message" => $e->getMessage()
                     ]

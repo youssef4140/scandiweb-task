@@ -47,27 +47,11 @@ class Products extends Model
         return $this->type($method, $product);
     }
 
-    /**
-     * Handle specific product type operations.
-     *
-     * @param string $method The operation method ("add", "find", "update").
-     * @param mixed  $product The product data for the operation.
-     * @return mixed The result of the operation.
-     * @throws \Exception If an error occurs during the operation.
-     */
     public function books($method, $product = null)
     {
         return $this->type($method, $product);
     }
 
-    /**
-     * Handle specific product type operations.
-     *
-     * @param string $method The operation method ("add", "find", "update").
-     * @param mixed  $product The product data for the operation.
-     * @return mixed The result of the operation.
-     * @throws \Exception If an error occurs during the operation.
-     */
     public function furniture($method, $product = null)
     {
         return $this->type($method, $product);

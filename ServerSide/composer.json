@@ -1,0 +1,21 @@
+{
+    "name": "youssef/youssef-scandiweb-task",
+    "description": "A crud api for a products list.",
+    "type": "project",
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Youssef Mostafa",
+            "email": "youssef.mostafa4140@gmail.com"
+
+        }
+    ],
+    "minimum-stability": "stable"
+}
